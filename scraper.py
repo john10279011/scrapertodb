@@ -1,22 +1,25 @@
 import json
 import os
-import re
-import requests
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from pyvirtualdisplay import Display
 from webdriver_manager.firefox import GeckoDriverManager
+import re
+import requests
+from pyvirtualdisplay import Display
 
-# Start virtual display
+# Install geckodriver
+GeckoDriverManager().install()
+
+# URL to scrape
+url = "http://admin:admin@197.155.149.22/default/en_US/tools.html?type=sms_inbox"
+
+# Setup virtual display
 display = Display(visible=0, size=(800, 600))
 display.start()
 
-# URL
-url = "http://admin:admin@197.155.149.22/default/en_US/tools.html?type=sms_inbox"
-
 # Firefox options
 options = Options()
-options.headless = True
+options.headless = True  # Set headless mode
 
 # Initialize WebDriver using GeckoDriverManager
 driver = webdriver.Firefox(options=options)
@@ -109,5 +112,8 @@ print("Scraped data:")
 for item in combined_data:
     print(json.dumps(item, indent=4))
 
-# Quit the driver
+# Stop virtual display
+display.stop()
+
+# Quit WebDriver
 driver.quit()
