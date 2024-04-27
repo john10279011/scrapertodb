@@ -6,6 +6,8 @@ from webdriver_manager.firefox import GeckoDriverManager
 import re
 import requests
 
+GeckoDriverManager().install()
+
 url = "http://admin:admin@197.155.149.22/default/en_US/tools.html?type=sms_inbox"
 
 options = Options()
