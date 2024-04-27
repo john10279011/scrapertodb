@@ -1,20 +1,13 @@
 import json
-import os
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from webdriver_manager.firefox import GeckoDriverManager
 import re
 import requests
-
-GeckoDriverManager().install()
-
-url = "http://admin:admin@197.155.149.22/default/en_US/tools.html?type=sms_inbox"
-
-options = Options()
-options.headless = True  # Set headless mode
+from selenium import webdriver
+from webdriver_manager.firefox import GeckoDriverManager
 
 # Initialize WebDriver using GeckoDriverManager
-driver = webdriver.Firefox()
+driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+
+url = "http://admin:admin@197.155.149.22/default/en_US/tools.html?type=sms_inbox"
 
 driver.get(url)
 
@@ -103,4 +96,5 @@ for item in combined_data:
 print("Scraped data:")
 for item in combined_data:
     print(json.dumps(item, indent=4))
+
 driver.quit()
