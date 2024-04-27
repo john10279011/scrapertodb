@@ -12,9 +12,7 @@ options = Options()
 options.headless = True  # Set headless mode
 
 # Initialize WebDriver using GeckoDriverManager
-driver = webdriver.Firefox(
-    executable_path=GeckoDriverManager().install(), options=options
-)
+driver = webdriver.Firefox()
 
 driver.get(url)
 
