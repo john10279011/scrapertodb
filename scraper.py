@@ -1,18 +1,18 @@
 import json
 import os
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.firefox.options import Options
+from webdriver_manager.firefox import GeckoDriverManager
 import re
 import requests
 
 url = "http://admin:admin@197.155.149.22/default/en_US/tools.html?type=sms_inbox"
 
 options = Options()
-options.add_argument("--headless")
-options.add_argument("--no-sandbox")
+options.headless = True  # Set headless mode
 
-driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+# Initialize WebDriver using GeckoDriverManager
+driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
 
 driver.get(url)
 
@@ -20,7 +20,7 @@ driver.get(url)
 def scrape():
     data = []
 
-    tb = table.find_element_by_xpath(".//tbody")
+    tb = driver.find_element_by_xpath("//table[contains(@id,'l1_sms_store')]/tbody")
     rows = tb.find_elements_by_xpath(".//tr")
 
     for index, row in enumerate(rows):
@@ -77,15 +77,12 @@ def scrape():
     return data
 
 
-table = driver.find_element_by_xpath("//table[contains(@id,'l1_sms_store')]")
 data1 = scrape()
 click = driver.find_element_by_xpath("//input[contains(@value,'2')]").click()
-table = driver.find_element_by_xpath("//table[contains(@id,'l2_sms_store')]")
 data2 = scrape()
 
 combined_data = data1 + data2
 
-# Sending data through the webhook
 # Sending data through the webhook
 webhook_url = "http://104.248.60.135/marchepro/webhook-receiver"
 
